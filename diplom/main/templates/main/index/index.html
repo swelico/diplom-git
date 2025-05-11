@@ -1,0 +1,148 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Главная{% endblock title %}
+
+{% block content %}
+    <section class="home d-flex flex-column">
+        <div class="home-title d-flex flex-column align-items-center">
+            
+            <!-- Баннер -->
+            <img src="{% static 'img/banner.png' %}" class="banner-img" alt="Баннер">
+            
+            <!-- Блок с описанием школы и видео -->
+            <div class="school-section">
+                <div class="school-description">
+                    <h3>О школе и Практикуме</h3>
+                    <p>Меня зовут <strong>Людмила Шубина</strong>. Я реабилитолог, массажист, клинический психолог, когнитивно-поведенческий терапевт.</p>
+                    <p>За 10 лет практики через мои руки прошли тысячи женских лиц. Они стали красивее и моложе на 5–10 лет.</p>
+                    <p>Если для вас молодость лица имеет большое значение, если вы хотите <strong>научиться своими руками стирать морщины, подтягивать лицо и делать кожу упругой и эластичной</strong>, я покажу вам волшебные упражнения на моих уроках.</p>
+                </div>
+                <div class="school-video">
+                    <iframe width="720" height="405" src="https://rutube.ru/play/embed/37fe814601084513b2298ecab6b134bc/" frameborder="0" allow="clipboard-write; autoplay" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                </div>
+            </div>
+            
+            <!-- Преимущества -->
+            <section class="benefits-section">
+                <div class="section-header">
+                    <h2 class="section-title">Почему выбирают нас</h2>
+                    <div class="section-divider"></div>
+                </div>
+                
+                <div class="benefits-container">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="benefit-icon-img">✓</i>
+                        </div>
+                        <h3 class="benefit-title">Проверенные методики</h3>
+                        <p class="benefit-text">Все техники основаны на многолетнем опыте и доказали свою эффективность</p>
+                    </div>
+                    
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="benefit-icon-img">♥</i>
+                        </div>
+                        <h3 class="benefit-title">Индивидуальный подход</h3>
+                        <p class="benefit-text">Учитываем особенности каждой ученицы и помогаем адаптировать упражнения</p>
+                    </div>
+                    
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="benefit-icon-img">★</i>
+                        </div>
+                        <h3 class="benefit-title">Видимый результат</h3>
+                        <p class="benefit-text">Заметные изменения уже после нескольких недель регулярных занятий</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Кнопки действия -->
+            <section class="cta-section">
+                <div class="cta-container">
+                    <h2 class="cta-title">Готовы начать свой путь к молодости?</h2>
+                    <p class="cta-text">Присоединяйтесь к нашим курсам или подпишитесь на Telegram-канал</p>
+                    <div class="buttons-wrapper d-flex justify-content-center gap-3 mt-4">
+                        <a href="/shop" class="home-btn">ВСЕ КУРСЫ</a>
+                        <a href="https://t.me/forwomen40_bot" class="telegram-btn">МЫ В TELEGRAM</a>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Блок с отзывами -->
+            <div class="reviews-section">
+                <h3>Отзывы наших учениц</h3>
+                <div class="reviews-container">
+                    <div class="review-card">
+                        <h4>Анна, 45 лет</h4>
+                        <p>Курсы Людмилы — это настоящая находка! За месяц тренировок моё лицо стало заметно подтянутее, а кожа — более упругой. Спасибо за доступные и эффективные техники!</p>
+                        <div class="review-images">
+                            <div class="image-wrapper">
+                                <img src="{% static 'img/before1.jpg' %}" class="review-img" alt="До">
+                                <span class="image-label">До</span>
+                            </div>
+                            <div class="image-wrapper">
+                                <img src="{% static 'img/after1.jpg' %}" class="review-img" alt="После">
+                                <span class="image-label">После</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <h4>Елена, 52 года</h4>
+                        <p>Я не верила, что можно так преобразиться без операций. Упражнения простые, но результат потрясающий! Людмила — профессионал своего дела.</p>
+                        <div class="review-images">
+                            <div class="image-wrapper">
+                                <img src="{% static 'img/before2.jpg' %}" class="review-img" alt="До">
+                                <span class="image-label">До</span>
+                            </div>
+                            <div class="image-wrapper">
+                                <img src="{% static 'img/after2.jpg' %}" class="review-img" alt="После">
+                                <span class="image-label">После</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <h4>Мария, 38 лет</h4>
+                        <p>Онлайн-тренинги очень удобны, всё объясняют пошагово. Мои морщины стали менее заметными, и я чувствую себя моложе. Рекомендую всем!</p>
+                        <div class="review-images">
+                            <div class="image-wrapper">
+                                <img src="{% static 'img/before3.jpg' %}" class="review-img" alt="До">
+                                <span class="image-label">До</span>
+                            </div>
+                            <div class="image-wrapper">
+                                <img src="{% static 'img/after3.jpg' %}" class="review-img" alt="После">
+                                <span class="image-label">После</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="home-recomendation">
+            <div class="rec-title mb-4">
+                <h3><span>Популярные курсы</span></h3>
+            </div>
+        </div>
+        <div class="home-cards row justify-content-center gx-4 gy-4"> 
+            {% for product in products %}
+                <div class="col-12 col-sm-6 col-md-4 d-flex justify-content-center">
+                    <div class="home-card d-flex flex-column justify-content-between align-items-center text-center">
+                        <a href="{{ product.get_absolute_url }}" class="text-decoration-none text-dark w-100 d-flex flex-column align-items-center">
+                            <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/noimage.jpg' %}{% endif %}" class="card-img" alt="">
+                            <h5 class="title-card">{{ product.name }}</h5>
+                            {% if product.discount %}
+                                <div class="cart-discount d-flex gap-2 justify-content-center align-items-center">
+                                    <p class="line text-muted text-decoration-line-through mb-0">{{ product.price }} ₽</p>
+                                    <p class="price mb-0">{{ product.sell_price }} ₽</p>
+                                </div>
+                            {% else %}
+                                <p class="price mb-0">{{ product.price }} ₽</p>
+                            {% endif %}
+                        </a>
+                        <a href="{{ product.get_absolute_url }}" class="home-btn mt-3">Подробнее</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock content %}

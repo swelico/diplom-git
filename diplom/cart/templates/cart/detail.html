@@ -1,0 +1,124 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Корзина{% endblock title %}
+
+{% block content %}
+    <div class="cart-container">
+        <div class="cart-header">
+            <h1 class="cart-title">Ваша корзина</h1>
+            <div class="cart-subtitle">
+                {% with cart_quantity=cart|length %}
+                    {% if cart_quantity > 0 %}
+                        <span>{{ cart_quantity }} {% if cart_quantity == 1 %}товар{% elif cart_quantity < 5 %}товара{% else %}товаров{% endif %} в корзине</span>
+                    {% else %}
+                        <span>Ваша корзина пуста</span>
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+        
+        {% if cart|length > 0 %}
+            <div class="cart-content">
+                <div class="cart-items">
+                    {% for item in cart %}
+                        {% with product=item.product %}
+                            <div class="cart-item">
+                                <div class="cart-item-image">
+                                    <a href="{{ product.get_absolute_url }}">
+                                        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/noimage.jpg' %}{% endif %}" alt="{{ product.name }}">
+                                    </a>
+                                    {% if product.discount %}
+                                        <span class="cart-item-badge">Скидка</span>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="cart-item-details">
+                                    <h3 class="cart-item-title">
+                                        <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                                    </h3>
+                                    <div class="cart-item-category">
+                                        <span>Категория:</span>
+                                        <a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a>
+                                    </div>
+                                    <div class="cart-item-quantity">
+                                        <span>Количество:</span>
+                                        <span class="quantity-value">{{ item.quantity }}</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="cart-item-price">
+                                    {% if product.discount %}
+                                        <div class="price-with-discount">
+                                            <span class="old-price">{{ product.price }} ₽</span>
+                                            <span class="current-price">{{ product.sell_price }} ₽</span>
+                                        </div>
+                                        <div class="item-total">
+                                            <span>Итого:</span>
+                                            <span class="total-value">{{ item.total_price }} ₽</span>
+                                        </div>
+                                    {% else %}
+                                        <div class="price-regular">
+                                            <span class="current-price">{{ product.price }} ₽</span>
+                                        </div>
+                                        <div class="item-total">
+                                            <span>Итого:</span>
+                                            <span class="total-value">{{ item.total_price }}₽</span>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="cart-item-actions">
+                                    <form action="{% url 'cart:cart_remove' product.id %}" method="post" class="remove-form">
+                                        <button type="submit" class="remove-button">
+                                            <span class="remove-icon">×</span>
+                                            <span class="remove-text">Удалить</span>
+                                        </button>
+                                        {% csrf_token %}
+                                    </form>
+                                </div>
+                            </div>
+                        {% endwith %}
+                    {% endfor %}
+                </div>
+                
+                <div class="cart-summary">
+                    <div class="summary-header">
+                        <h3>Сумма заказа</h3>
+                    </div>
+                    <div class="summary-content">
+                        <div class="summary-row">
+                            <span>Товары ({{ cart|length }})</span>
+                            <span>{{ cart.get_total_price }} ₽</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Скидка</span>
+                            <span class="discount-value">0 ₽</span>
+                        </div>
+                        <div class="summary-divider"></div>
+                        <div class="summary-total">
+                            <span>Итого к оплате</span>
+                            <span class="total-price">{{ cart.get_total_price }} ₽</span>
+                        </div>
+                        <div class="summary-actions">
+                            <a href="{% url 'orders:order_create' %}" class="checkout-button">Оформить заказ</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="empty-cart">
+                <div class="empty-cart-icon">🛒</div>
+                <h2>Ваша корзина пуста</h2>
+                <p>Добавьте курсы в корзину, чтобы оформить заказ</p>
+            </div>
+        {% endif %}
+        
+        <div class="cart-actions">
+            <a href="{% url 'main:product_list' %}" class="continue-shopping">
+                <span class="back-icon">←</span>
+                <span>Продолжить покупки</span>
+            </a>
+        </div>
+    </div>
+{% endblock content %}

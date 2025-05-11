@@ -1,0 +1,86 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ product.name }}
+{% endblock title %}
+
+{% block content %}
+    <div class="product-detail-container">
+        <div class="product-detail-breadcrumb">
+            <a href="{% url 'main:product_list' %}">Все курсы</a> 
+            <span class="breadcrumb-separator">›</span> 
+            <a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a> 
+            <span class="breadcrumb-separator">›</span> 
+            <span class="breadcrumb-current">{{ product.name }}</span>
+        </div>
+        
+        <div class="product-detail-content">
+            <div class="product-detail-image">
+                <div class="image-container">
+                    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/noimage.jpg' %}{% endif %}" class="detail-image" alt="{{ product.name }}">
+                    {% if product.discount %}
+                        <span class="detail-badge">Скидка</span>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="product-detail-info">
+                <h1 class="product-detail-title">{{ product.name }}</h1>
+                
+                <div class="product-detail-category">
+                    <span class="category-label">Категория:</span>
+                    <a href="{{ product.category.get_absolute_url }}" class="category-link">{{ product.category }}</a>
+                </div>
+                
+                <div class="product-detail-description">
+                    {{ product.description|linebreaks }}
+                </div>
+                
+                <div class="product-detail-features">
+                    <div class="feature-item">
+                        <span class="feature-icon">⏱</span>
+                        <span class="feature-text">4 недели обучения</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">📊</span>
+                        <span class="feature-text">Для всех уровней</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🎓</span>
+                        <span class="feature-text">Сертификат по окончании</span>
+                    </div>
+                </div>
+                
+                <div class="product-detail-price">
+                    {% if product.discount %}
+                        <div class="price-with-discount">
+                            <span class="old-price">{{ product.price }} ₽</span>
+                            <span class="current-price">{{ product.sell_price }} ₽</span>
+                            <span class="discount-badge">Скидка</span>
+                        </div>
+                    {% else %}
+                        <span class="current-price">{{ product.price }} ₽</span>
+                    {% endif %}
+                </div>
+                <div class="product-detail-guarantee">
+                    <p>✓ Гарантия качественного обучения</p>
+                    <p>✓ Доступ к материалам курса навсегда</p>
+                </div>
+                
+                <form action="{% url 'cart:cart_add' product.id %}" class="cart-add-form" method="post">
+                    <div class="form-fields">
+                        {{ cart_product_form }}
+                        {% csrf_token %}
+                    </div>
+                    <button type="submit" class="add-to-cart-button">
+                        <span class="btn-icon">🛒</span>
+                        <span class="btn-text">В корзину</span>
+                    </button>
+                </form>
+                
+               
+            </div>
+        </div>
+    </div>
+{% endblock content %}

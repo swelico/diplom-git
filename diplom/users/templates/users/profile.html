@@ -1,0 +1,123 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Личный кабинет{% endblock title %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-card">
+        <div class="profile-header">
+            <h2 class="profile-title">Личный кабинет</h2>
+            <div class="profile-divider"></div>
+        </div>
+        
+        <div class="profile-content">
+            <form action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data" class="profile-form">
+                {% csrf_token %}
+                <div class="profile-layout">
+                    <div class="profile-sidebar">
+                        <div class="avatar-container">
+                            {% if user.image %}
+                                <img src="{{ user.image.url }}" alt="Аватар пользователя" class="avatar-image">
+                            {% else %}
+                                <img src="{% static 'img/noimage.jpg' %}" alt="Аватар пользователя" class="avatar-image">
+                            {% endif %}
+                            <div class="avatar-upload">
+                                <label for="id_image" class="avatar-label">Изменить фото</label>
+                                <input type="file" class="avatar-input" id="id_image" name="image" accept="image/*">
+                            </div>
+                        </div>
+                        
+                        <div class="profile-actions">
+                            <button type="submit" class="btn btn-primary profile-save-btn">Сохранить изменения</button>
+                            <a class="btn btn-accent profile-logout-btn" href="{% url 'user:logout' %}">Выйти из аккаунта</a> 
+                        </div>
+                    </div>
+                    
+                    <div class="profile-details">
+                        <div class="form-group">
+                            <label for="id_first_name" class="form-label">Имя</label>
+                            <input type="text" class="form-control" id="id_first_name" name="first_name" 
+                                placeholder="Ваше имя" value="{{ form.first_name.value }}" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="id_last_name" class="form-label">Фамилия</label>
+                            <input type="text" class="form-control" id="id_last_name" name="last_name" 
+                                placeholder="Ваша фамилия" value="{{ form.last_name.value }}" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="id_username" class="form-label">Никнейм</label>
+                            <input type="text" class="form-control" id="id_username" name="username" 
+                                placeholder="Ваш никнейм" value="{{ form.username.value }}" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="id_email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="id_email" name="email" 
+                                placeholder="Ваш Email" value="{{ form.email.value }}" required>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="orders-card">
+        <div class="orders-header">
+            <h2 class="orders-title">Ваши заказы</h2>
+            <div class="orders-divider"></div>
+        </div>
+        
+        <div class="orders-content">
+            {% if orders %}
+                <div class="orders-list">
+                    {% for order in orders %}
+                        <div class="order-item">
+                            <div class="order-item-header">
+                                <h5 class="order-item-title">Заказ № {{ order.id }}</h5>
+                                <span class="order-item-date">{{ order.created }}</span>
+                            </div>
+                            
+                            <div class="order-item-content">
+                                {% for item in order.items.all %}
+                                    <div class="order-product">
+                                        <div class="order-product-info">
+                                            <div class="order-product-name">
+                                                <span class="order-label">Курс:</span>
+                                                <a class="order-product-link" href="{% url 'main:product_detail' item.product.slug %}">
+                                                    {{ item.product.name }}
+                                                </a>
+                                            </div>
+                                            
+                                            <div class="order-product-details">
+                                                <div class="order-detail">
+                                                    <span class="order-label">Количество:</span>
+                                                    <span class="order-value">{{ item.quantity }}</span>
+                                                </div>
+                                                
+                                                <div class="order-detail">
+                                                    <span class="order-label">Стоимость:</span>
+                                                    <span class="order-value order-price">{{ item.price }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-orders">
+                    <div class="empty-orders-icon">📦</div>
+                    <h4 class="empty-orders-title">У Вас пока нет заказов</h4>
+                    <p class="empty-orders-text">Когда вы сделаете заказ, он появится здесь</p>
+                    <a href="{% url 'main:product_list' %}" class="btn btn-primary">Перейти к курсам</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

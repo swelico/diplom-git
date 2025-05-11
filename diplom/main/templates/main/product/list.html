@@ -1,0 +1,106 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Каталог курсов{% endblock title %}
+
+{% block content %}
+    <div class="catalog-container">
+        <div class="catalog-header">
+            <h1 class="catalog-title">{% if category %}{{ category.name }}{% else %}Все курсы{% endif %}</h1>
+            <p class="catalog-description">Выберите курс, который подходит именно вам</p>
+        </div>
+        
+        <div class="catalog-content">
+            <div class="catalog-sidebar">
+                <div class="sidebar-header">
+                    <h3 class="sidebar-title">Категории</h3>
+                    <div class="sidebar-divider"></div>
+                </div>
+                
+                <ul class="category-list">
+                    <li class="category-item {% if not category %}active{% endif %}">
+                        <a href="{% url "main:product_list" %}" class="category-link">
+                            <span class="category-icon">✦</span>
+                            <span class="category-name">Все курсы</span>
+                        </a>
+                    </li>
+                    {% for c in categories %}
+                        <li class="category-item {% if category.slug == c.slug %}active{% endif %}">
+                            <a href="{{ c.get_absolute_url }}" class="category-link">
+                                <span class="category-icon">✦</span>
+                                <span class="category-name">{{ c.name }}</span>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                
+                <div class="sidebar-promo">
+                    <div class="promo-content">
+                        <h4 class="promo-title">Нужна помощь с выбором?</h4>
+                        <p class="promo-text">Свяжитесь с нами, и мы поможем подобрать курс, который подойдет именно вам</p>
+                        <a href="https://t.me/forwomen40_bot" class="promo-button">Связаться</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="catalog-main">
+                <div class="products-grid">
+                    {% for product in products %}
+                        <div class="product-card">
+                            <a href="{{ product.get_absolute_url }}" class="product-link">
+                                <div class="product-image-container">
+                                    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/noimage.jpg' %}{% endif %}" class="product-image" alt="{{ product.name }}">
+                                    {% if product.discount %}
+                                        <span class="product-badge">Скидка</span>
+                                    {% endif %}
+                                </div>
+                                <div class="product-content">
+                                    <h3 class="product-title">{{ product.name }}</h3>
+                                    <div class="product-meta">
+                                        <span class="product-duration">4 недели</span>
+                                        <span class="product-level">Для всех</span>
+                                    </div>
+                                    <div class="product-price-container">
+                                        {% if product.discount %}
+                                            <span class="product-old-price">{{ product.price }} ₽</span>
+                                            <span class="product-price">{{ product.sell_price }} ₽</span>
+                                        {% else %}
+                                            <span class="product-price">{{ product.price }} ₽</span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="product-button">Подробнее</div>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                {% if products.paginator.num_pages > 1 %}
+                    <div class="pagination-container">
+                        <ul class="pagination">
+                            <li class="pagination-item {% if not products.has_previous %}disabled{% endif %}">
+                                <a href="{% if products.has_previous %}?page={{ products.previous_page_number }}{% endif %}" class="pagination-link pagination-arrow">
+                                    <span>←</span>
+                                </a>
+                            </li>
+                            
+                            {% for page in products.paginator.page_range %}
+                                {% if page >= products.number|add:-2 and page <= products.number|add:2 %}
+                                    <li class="pagination-item">
+                                        <a href="?page={{ page }}" class="pagination-link {% if products.number == page %}active{% endif %}">{{ page }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            <li class="pagination-item {% if not products.has_next %}disabled{% endif %}">
+                                <a href="{% if products.has_next %}?page={{ products.next_page_number }}{% endif %}" class="pagination-link pagination-arrow">
+                                    <span>→</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}
